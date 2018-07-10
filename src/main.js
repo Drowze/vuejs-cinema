@@ -4,9 +4,21 @@ import genres from './util/genres'
 
 new Vue({
   el: '#app',
+  data: {
+    genre: [],
+    time: []
+  },
   methods: {
     checkFilter(category, title, checked) {
-      console.log(category, title, checked)
+      if(checked) {
+        this[category].push(title);
+      }
+      else {
+        let index = this[category].indexOf(title);
+        if(index > -1) {
+          this[category].splice(index, 1);
+        }
+      }
     }
   },
   components: {
@@ -14,11 +26,12 @@ new Vue({
       template: `<div id="movie-list">
                    <div v-for="movie in movies" class="movie">{{ movie.title }}</div>
                  </div>`,
+      props: ['genre', 'time'],
       data: () => ({
         movies: [
-          { title: 'Pulp Fiction' },
-          { title: 'Home Alone' },
-          { title: 'Austin Powers' }
+          { title: 'Pulp Fiction', genre: genres.CRIME },
+          { title: 'Home Alone', genre: genres.COMEDY },
+          { title: 'Austin Powers', genre: genres.COMEDY }
         ]
       })
     },
