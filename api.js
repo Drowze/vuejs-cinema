@@ -3,7 +3,7 @@ require('dotenv').config();
 const axios = require('axios');
 const async = require('async');
 const moment = require('moment-timezone');
-moment.tz.setDefault("UTC");
+moment.tz.setDefault('UTC');
 
 // Axios
 const $http = axios.create({
