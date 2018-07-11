@@ -20,14 +20,28 @@
 </template>
 
 <script>
+  import times from '../util/times';
+
   export default {
-    props: ['movie', 'sessions', 'day'],
+    props: ['movie', 'sessions', 'day', 'time'],
     methods: {
       formatSessionTime(raw) {
         return this.$moment(raw).format('h:mm A')
       },
       filteredSessions(sessions) {
-        return sessions.filter(session => this.$moment(session.time).isSame(this.day, 'day'));
+        return sessions.filter(this.sessionPassesTimeFilter);
+      },
+      sessionPassesTimeFilter(session) {
+        if(!this.day.isSame(this.$moment(session.time), 'day')) {
+          return false
+        }
+        if(this.time.length === 0 || this.time.length === 2) {
+          return true;
+        }
+        if(this.time[0] === times.AFTER_6PM) {
+          return this.$moment(session.time).hour() >= 18;
+        }
+        return this.$moment(session.time).hour() <= 18;
       }
     }
   }
